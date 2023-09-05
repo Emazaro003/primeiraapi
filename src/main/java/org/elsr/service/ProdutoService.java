@@ -25,13 +25,14 @@ public class ProdutoService {
     }
 
     @Transactional
-    public void addProduto(ProdutoDTO produtoDTO){
+    public Produto addProduto(ProdutoDTO produtoDTO){
         Produto p = new Produto();
         p.setNome(produtoDTO.getNome());
         p.setCategoria(produtoDTO.getCategoria());
         p.setPreco(produtoDTO.getPreco());
 
         produtoRepository.persist(p);
+        return p;
     }
 
     @Transactional
@@ -46,7 +47,7 @@ public class ProdutoService {
     }
 
     @Transactional
-    public void deleteProduto(Long id){
-        produtoRepository.deleteById(id);
+    public boolean deleteProduto(Long id){
+        return produtoRepository.deleteById(id);
     }
 }
