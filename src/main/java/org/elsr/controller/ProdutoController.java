@@ -1,6 +1,6 @@
 package org.elsr.controller;
 
-import java.util.List;
+import java.net.URI;
 
 import org.elsr.dto.ProdutoDTO;
 import org.elsr.entity.Produto;
@@ -24,22 +24,32 @@ public class ProdutoController {
     ProdutoService produtoService;
 
     @GET
-    public RestResponse<List<Produto>> getAllProduto(){
-        return ResponseBuilder.ok(produtoService.findAllProduto()).build();
+    public RestResponse<Object> getAllProduto(){
+        return ResponseBuilder.ok().entity(produtoService.findAllProduto()).build();
     }
 
     @GET
     @Path("/{id}")
-    public RestResponse<Produto> getProduto(@PathParam("id") Long id){
-        return ResponseBuilder.ok(produtoService.findProduto(id)).build();
+    public RestResponse<Object> getProduto(@PathParam("id") Long id){
+        Produto p = produtoService.findProduto(id);
+        if (p == null){
+            return ResponseBuilder.notFound().build();
+        }
+        return ResponseBuilder.ok().entity(p).build();
     }
 
     @POST
-    public RestResponse<Produto> postProduto(ProdutoDTO produtoDTO){
-        if (produtoDTO == null) {
-            ResponseBuilder.notFound().build();
+    public Response postProduto(ProdutoDTO produtoDTO){
+        if (produtoDTO.getNome() == "" || produtoDTO.getCategoria() == "" || produtoDTO.getPreco() <= 1) {
+            return Response.status(400).entity("Dados invalidos").build();
         }
-        return ResponseBuilder.create(Response.Status.CREATED, produtoService.addProduto(produtoDTO)).build();
+        try {
+            Produto p = produtoService.addProduto(produtoDTO);
+            URI uri = new URI("api/produto/"+ p.getId());
+            return Response.created(uri).entity(p).build();
+        } catch (Exception e) {
+            return Response.status(500).entity("Nao foi possivel encontrar o id").build();
+        }
     }
 
     @DELETE
