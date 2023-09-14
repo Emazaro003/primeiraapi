@@ -7,19 +7,19 @@ import lombok.Data;
 @Builder
 @Data
 @AllArgsConstructor
-public class PagamentoDTO {
-    
-    private String formaDePagamento;
+public class PedidoDTO {
 
-    private double valor;
+    private Long ProdutoId;
 
-    public boolean pagamentoValidate(){
-        if (this.formaDePagamento.equals("")){
+    private Long PagamentoId;
+
+    public boolean pedidoValidate(){
+        if (this.ProdutoId < 0) {
+            return false;
+        }if (this.ProdutoId < 0) {
             return false;
         }
-        if (this.valor <= 1){
-            return false;
-        }
+
         return true;
     }
 }

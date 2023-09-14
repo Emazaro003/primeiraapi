@@ -17,7 +17,7 @@ public class Pagamento {
     @GeneratedValue
     private Long Id;
 
-    private String formaDePagamento;
+    private String FormaDePagamento;
 
-    private double valor;
+    private double Valor;
 }

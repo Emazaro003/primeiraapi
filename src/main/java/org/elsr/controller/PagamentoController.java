@@ -44,7 +44,7 @@ public class PagamentoController {
     @POST
     public Response postPagamento(PagamentoDTO pagamentoDTO){
 
-        if (pagamentoDTO.getFormaDePagamento().equals("") || pagamentoDTO.getValor() <= 1) {
+        if (!pagamentoDTO.pagamentoValidate()) {
             return Response.status(400).entity("Dados invalidos").build();
         }
 

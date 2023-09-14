@@ -15,4 +15,17 @@ public class ProdutoDTO {
 
     private double Preco;
 
+    public boolean produtoValidate(){
+        if (this.Nome.equals("")){
+            return false;
+        }
+        if (this.Categoria.equals("")){
+            return false;
+        }
+        if (this.Preco <= 1){
+            return false;
+        }
+        return true;
+    }
+
 }
